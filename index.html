@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MORITA SABO | 森田茶房</title>
+    <style>
+        :root {
+            --dark-green: #1a261b;
+            --gold: #c5a059;
+            --soft-white: #fcfcfc;
+            --text-main: #1d1d1f;
+            --overlay: rgba(0, 0, 0, 0.55);
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+            background-color: var(--soft-white);
+            color: var(--text-main);
+            line-height: 1.8;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed; top: 0; width: 100%;
+            padding: 20px 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px); color: #fff;
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000;
+        }
+        .logo { font-size: 24px; letter-spacing: 0.4em; font-weight: bold; }
+        .lang-switch { cursor: pointer; font-size: 11px; border: 1px solid #fff; padding: 6px 18px; border-radius: 30px; transition: 0.3s; }
+        .lang-switch:hover { background: #fff; color: #000; }
+
+        /* --- Hero with Brush Text (筆文字背景) --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(var(--overlay), var(--overlay)), url('image_b66ade.jpg');
+            background-size: cover; background-position: center 70%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: #fff; position: relative; overflow: hidden;
+        }
+
+        /* 背景にうっすら浮かぶ筆文字デザイン */
+        .brush-bg {
+            position: absolute;
+            font-size: clamp(100px, 20vw, 300px);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.08); /* ここの数字で薄さを調整 */
+            white-space: nowrap; z-index: 1; pointer-events: none; letter-spacing: 0.2em;
+        }
+
+        .hero h1 { position: relative; z-index: 2; font-size: clamp(30px, 6vw, 60px); margin: 0; letter-spacing: 0.3em; }
+        .hero p { position: relative; z-index: 2; font-size: 16px; margin-top: 25px; font-weight: 200; letter-spacing: 0.2em; }
+
+        /* --- Products --- */
+        .section-title { text-align: center; padding-top: 100px; font-size: 28px; letter-spacing: 0.3em; color: var(--dark-green); }
+        .products { padding: 60px 5% 100px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .product-card { background: #fff; transition: 0.4s; overflow: hidden; border-bottom: 1px solid #eee; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-image-box { width: 100%; height: 350px; overflow: hidden; }
+        .product-image-box img { width: 100%; height: 100%; object-fit: cover; }
+        .product-info { padding: 30px 20px; text-align: center; }
+        .product-info h3 { font-size: 18px; margin-bottom: 10px; }
+        .btn-add { display: inline-block; padding: 12px 35px; border: 1px solid var(--dark-green); color: var(--dark-green); text-decoration: none; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; background: none; transition: 0.3s; }
+        .btn-add:hover { background: var(--dark-green); color: #fff; }
+
+        /* --- Philosophy --- */
+        .philosophy { background-color: #1a1a1a; color: #fff; padding: 120px 15%; text-align: center; }
+        .philosophy h2 { font-size: 24px; letter-spacing: 0.3em; margin-bottom: 50px; color: var(--gold); }
+        .philosophy p { font-size: 15px; line-height: 2.2; text-align: justify; opacity: 0.8; max-width: 800px; margin: 0 auto; }
+
+        /* --- Footer --- */
+        footer { padding: 60px 0; background: #000; color: #fff; text-align: center; }
+        .sns-links { margin-bottom: 30px; }
+        .sns-links a { color: #fff; text-decoration: none; margin: 0 20px; font-size: 12px; opacity: 0.6; transition: 0.3s; }
+        .sns-links a:hover { opacity: 1; }
+
+        /* --- Checkout --- */
+        #checkout-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; padding: 100px 10%; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" id="navLogo">MORITA SABO</div>
+        <div class="lang-switch" onclick="toggleLang()">JP / EN</div>
+    </header>
+
+    <section class="hero">
+        <div class="brush-bg">森田茶房</div>
+        <h1 id="heroTitle">MORITA SABO</h1>
+        <p id="heroSub">Inheriting the soul of the Azuchi-Momoyama period.</p>
+    </section>
+
+    <h2 class="section-title" id="menuTitle">COLLECTION</h2>
+    <div class="products">
+        <div class="product-card">
+            <div class="product-image-box"><img src="sencha_item.jpg" alt="Sencha"></div>
+            <div class="product-info">
+                <h3 id="itemSenchaTitle">Premium Sencha "SHIN-YU"</h3>
+                <p id="itemSenchaDesc">Fresh aroma and a delicate balance of sweetness and astringency.</p>
+                <div style="margin-bottom: 20px; font-weight: bold; font-size: 20px;">$25.00</div>
+                <button class="btn-add" id="btnS" onclick="openCheckout('Sencha', 25)">ADD TO CART</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box"><img src="image_b61486.jpg" alt="Matcha"></div>
+            <div class="product-info">
+                <h3 id="itemMatchaTitle">Ceremonial Matcha "SUIMEI"</h3>
+                <p id="itemMatchaDesc">Vibrant green powder with a deep, sophisticated umami.</p>
+                <div style="margin-bottom: 20px; font-weight: bold; font-size: 20px;">$30.00</div>
+                <button class="btn-add" id="btnM" onclick="openCheckout('Matcha', 30)">ADD TO CART</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box"><img src="image_b6144a.jpg" alt="Hojicha"></div>
+            <div class="product-info">
+                <h3 id="itemHojichaTitle">Roasted Hojicha "KOHAKU"</h3>
+                <p id="itemHojichaDesc">Exquisite roasted aroma with a smooth and refreshing finish.</p>
+                <div style="margin-bottom: 20px; font-weight: bold; font-size: 20px;">$20.00</div>
+                <button class="btn-add" id="btnH" onclick="openCheckout('Hojicha', 20)">ADD TO CART</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="philosophy">
+        <div class="philosophy-inner">
+            <h2 id="phiTitle">The Philosophy of MORITA SABO</h2>
+            <p id="phiContent">
+                During the Azuchi-Momoyama period, tea culture reached its peak as a symbol of prestige and spiritual discipline for the Samurai. Sen no Rikyu perfected the "Sabo" (Tea House) as a sacred space where one could find their true self. We carry this pride in our name. In today's restless world, we offer you a moment of Zen—a place to rest your soul and find tranquility through every bowl of tea.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="sns-links">
+            <a href="https://instagram.com" target="_blank">INSTAGRAM</a>
+            <a href="https://x.com" target="_blank">X (TWITTER)</a>
+        </div>
+        <p style="font-size: 10px; opacity: 0.4;">&copy; 2026 MORITA SABO - EST. JAPAN</p>
+    </footer>
+
+    <div id="checkout-view">
+        <span style="cursor: pointer; color: #999; font-size: 12px;" onclick="location.reload()" id="backBtn">← BACK</span>
+        <h2 id="orderTitle" style="margin-top: 40px;">Your Order</h2>
+        <div id="checkout-item-name" style="font-size: 26px; margin: 30px 0; color: var(--dark-green);"></div>
+        <button class="btn-add" id="stripeBtn" style="background: var(--dark-green); color:#fff; width: 100%; max-width: 400px; border:none;">CHECKOUT VIA STRIPE</button>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+        const textData = {
+            en: {
+                logo: "MORITA SABO", heroTitle: "MORITA SABO", heroSub: "Inheriting the soul of the Azuchi-Momoyama period.",
+                menuTitle: "COLLECTION",
+                itemSenchaTitle: "Premium Sencha 'SHIN-YU'", itemSenchaDesc: "Fresh aroma and a balance of sweetness and astringency.",
+                itemMatchaTitle: "Ceremonial Matcha 'SUIMEI'", itemMatchaDesc: "Vibrant green powder with a deep, sophisticated umami.",
+                itemHojichaTitle: "Roasted Hojicha 'KOHAKU'", itemHojichaDesc: "Exquisite roasted aroma with a smooth, refreshing finish.",
+                phiTitle: "The Philosophy of MORITA SABO",
+                phiContent: "During the Azuchi-Momoyama period, tea culture reached its peak. Sen no Rikyu perfected the 'Sabo' as a sacred space. We carry this pride in our name. In today's restless world, we offer you a moment of Zen—a place to rest your soul and find tranquility through every bowl of tea.",
+                btn: "ADD TO CART", order: "Your Order", back: "← BACK", stripe: "CHECKOUT VIA STRIPE"
+            },
+            jp: {
+                logo: "森田茶房", heroTitle: "森田茶房", heroSub: "安土桃山時代の精神を、現代へ。",
+                menuTitle: "お品書き",
+                itemSenchaTitle: "特選 煎茶「神湯」", itemSenchaDesc: "爽やかな香りと、甘み・渋みの絶妙な調和。心洗われる一杯。",
+                itemMatchaTitle: "極上 抹茶「翠明」", itemMatchaDesc: "石臼で丁寧に挽きあげた、深く鮮やかな緑。気品ある旨み。",
+                itemHojichaTitle: "焙じ茶「琥珀」", itemHojichaDesc: "厳選茶葉を香ばしく煎り上げました。苛立った心を休める香りを。",
+                phiTitle: "森田茶房の想い",
+                phiContent: "安土桃山時代、お茶は大名たちの嗜みとして栄華を極めました。千利休は、戦に明け暮れる武士たちが己を見つめ直すための『茶房（さぼう）』を究極の空間へと高めました。私はその歴史にプライドを持ち、この名を掲げています。皆様にお茶を提供することで、各々方に禅の心を知り、忙しない日常で苛立った心を休ませてほしい。それが森田茶房の切なる願いです。",
+                btn: "カートへ追加", order: "ご注文内容", back: "← 戻る", stripe: "Stripeで決済する"
+            }
+        };
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'jp' : 'en';
+            document.getElementById('navLogo').innerText = textData[currentLang].logo;
+            document.getElementById('heroTitle').innerText = textData[currentLang].heroTitle;
+            document.getElementById('heroSub').innerText = textData[currentLang].heroSub;
+            document.getElementById('menuTitle').innerText = textData[currentLang].menuTitle;
+            document.getElementById('itemSenchaTitle').innerText = textData[currentLang].itemSenchaTitle;
+            document.getElementById('itemSenchaDesc').innerText = textData[currentLang].itemSenchaDesc;
+            document.getElementById('itemMatchaTitle').innerText = textData[currentLang].itemMatchaTitle;
+            document.getElementById('itemMatchaDesc').innerText = textData[currentLang].itemMatchaDesc;
+            document.getElementById('itemHojichaTitle').innerText = textData[currentLang].itemHojichaTitle;
+            document.getElementById('itemHojichaDesc').innerText = textData[currentLang].itemHojichaDesc;
+            document.getElementById('phiTitle').innerText = textData[currentLang].phiTitle;
+            document.getElementById('phiContent').innerText = textData[currentLang].phiContent;
+            document.getElementById('btnS').innerText = textData[currentLang].btn;
+            document.getElementById('btnM').innerText = textData[currentLang].btn;
+            document.getElementById('btnH').innerText = textData[currentLang].btn;
+            document.getElementById('orderTitle').innerText = textData[currentLang].order;
+            document.getElementById('backBtn').innerText = textData[currentLang].back;
+            document.getElementById('stripeBtn').innerText = textData[currentLang].stripe;
+        }
+
+        function openCheckout(name, price) {
+            document.getElementById('checkout-view').style.display = 'block';
+            document.getElementById('checkout-item-name').innerText = name + " - $" + price + ".00";
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
